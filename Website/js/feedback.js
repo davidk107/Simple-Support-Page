@@ -68,27 +68,8 @@ function submitSuggestion()
 	var feedbackReport = new FeedbackClass();
 	feedbackReport.set("feedbackText", suggestionsValue);
 
-	// Query for the last created report and retrieve its issue number
-	var lastCreatedFeedbackQuery = new Parse.Query(FeedbackClass);
-	lastCreatedFeedbackQuery.descending("createdAt");
-	lastCreatedFeedbackQuery.first().then(function(lastCreatedFeedback)
-	{
-		// Get the last created report and assign an issue number based on it
-		var feedbackNumber = 1;
-
-		// If report exists, then use that else start from 1
-		if (lastCreatedFeedback != null)
-		{
-			feedbackNumber = lastCreatedFeedback.get("feedbackNumber") + 1;
-		}
-			
-		// Set the issueNumber
-		feedbackReport.set("feedbackNumber",feedbackNumber);
-
-		// Save the bugReport
-		return feedbackReport.save();
-
-	}).then(function()
+	// Save the feedback
+	feedbackReport.save().then(function()
 	{
 		// Reset the fields
 		resetFields();

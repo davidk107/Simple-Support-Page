@@ -308,25 +308,6 @@ function submitReport()
 			bugReport.set("hasAttachments",false);
 		}
 
-		// Query for the last created report and retrieve its issue number
-		var lastCreatedReportQuery = new Parse.Query(BugReportClass);
-		lastCreatedReportQuery.descending("createdAt");
-		return lastCreatedReportQuery.first();
-
-	}).then(function(lastCreatedReport)
-	{
-		// Get the last created report and assign an issue number based on it
-		var issueNumber = 1;
-
-		// If report exists, then use that else start from 1
-		if (lastCreatedReport != null)
-		{
-			issueNumber = lastCreatedReport.get("issueNumber") + 1;
-		}
-			
-		// Set the issueNumber
-		bugReport.set("issueNumber",issueNumber);
-
 		// Save the bugReport
 		return bugReport.save();
 
