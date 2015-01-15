@@ -47,7 +47,7 @@ AdminDataLoader.prototype.retrieveData = function()
 		// Query for feedback
 		var FeedbackReport = Parse.Object.extend("Feedback");
 		feedbackQuery = new Parse.Query(FeedbackReport);
-		feedbackQuery.select("feedbackNumber", "feedbackText");
+		feedbackQuery.select("feedbackNumber", "feedbackText","status");
 		return feedbackQuery.find();
 
 	}).then(function(feedbacks)
@@ -65,17 +65,26 @@ AdminDataLoader.prototype.retrieveData = function()
 AdminDataLoader.prototype.parseAndStoreFeedbackReportData = function()
 {
 	// Arrays to store all feedback reports
-	var allFeedbackReports = [];
+	var openFeedbackReports = [];
+	var closedFeedbackReports = [];
 
 	// Loop through feedbacks and parse them into the array
 	for (var i = 0; i < this.feedbackReports.length; ++i)
 	{
 		// Create Feedback object
 		var feedbackReport = new FeedbackReportJSObject(this.feedbackReports[i]);
-		allFeedbackReports.push(feedbackReport);
+
+		if (feedbackReport.status == "Open")
+		{
+			openFeedbackReports.push(feedbackReport);			
+		}
+		else
+		{
+			closedFeedbackReports.push(feedbackReport);
+		}
 	}
 
-	this.storeDataIntoSessionStorage([allFeedbackReports],["allFeedbackReports"]);
+	this.storeDataIntoSessionStorage([openFeedbackReports, closedFeedbackReports],["openFeedbackReports","closedFeedbackReports"]);
 }
 
 // Parse the data and store it into sessionStorage
@@ -171,5 +180,8 @@ function FeedbackReportJSObject(parseFeedbackReportObject)
 
 	// Get text
 	this.feedbackText = parseFeedbackReportObject.get("feedbackText");
+
+	// Get status
+	this.status = parseFeedbackReportObject.get("status");
 }
 

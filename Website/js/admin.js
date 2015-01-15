@@ -32,14 +32,18 @@ function fetchData()
 function shouldRetreiveNewData()
 {
 	// In this case, checks if there are entries for allOpenIssues, allClosedIssues, and allFeedbackReports
-	return !(sessionStorage.getItem("allOpenIssues") == null || sessionStorage.getItem("allClosedIssues") == null  || sessionStorage.getItem("allFeedbackReports") == null)
+	return (sessionStorage.getItem("allOpenIssues") == null || sessionStorage.getItem("allClosedIssues") == null  || sessionStorage.getItem("allFeedbackReports") == null)
 }
+
 // On document ready
 $(document).ready(main);
 
 // Main Function
 function main()
 {
+	// Show the body
+	$("body").removeClass("hidden");
+
 	// Create an interval to check canLoadAdminPage every 50 ms
 	window.checkDataLoaded = setInterval(checkIfDataLoaded,50);
 
@@ -54,9 +58,6 @@ function main()
 
 	// Archived Issues Button Clicked
 	$("#archivedIssuesSidebarButton").click(archivedIssuesClicked);
-
-	// Feedback Button Clicked
-	$("#feedbackSidebarButton").click(feedbackClicked);
 
 	// Refresh Button Clicked
 	$("#refreshDataButton").click(refreshData);
@@ -76,8 +77,12 @@ function main()
 	// closedIssues tbody clicked
 	$("#closedIssuesTable tbody").on("click","tr","closedIssues",processTableClick);
 
-	// feedbackTable tbody clicked
-	$("#feedbackTable tbody").on("click","tr","feedbackTable",processTableClick);
+	// openFeedbackTable tbody clicked
+	$("#openFeedbackTable tbody").on("click","tr","openFeedbackTable",processTableClick);
+
+	// closedFeedbackTable tbody clicked
+	$("#closedFeedbackTable tbody").on("click","tr","closedFeedbackTable",processTableClick);
+
 }
 
 // Tbody Clicked
@@ -156,7 +161,6 @@ function refreshData()
 	$("#assignedIssuesContent").addClass("hidden");
 	$("#archivedIssuesContent").addClass("hidden");
 	$("#overviewContent").addClass("hidden");
-	$("#feedbackContent").addClass("hidden");
 
 	// Show loading screen
 	$("#loadingContent").removeClass("hidden");
@@ -169,7 +173,8 @@ function refreshData()
 	$("#myOpenIssuesTable").DataTable().clear();
 	$("#myClosedIssuesTable").DataTable().clear();
 	$("#closedIssuesTable").DataTable().clear();
-	$("#feedbackTable").DataTable().clear();
+	$("#openFeedbackTable").DataTable().clear();
+	$("#closedFeedbackTable").DataTable().clear();
 
 	// Create check for dataIsLoaded and refresh the view
 	checkDataLoaded = setInterval(checkIfDataLoaded,50);
@@ -201,7 +206,6 @@ function overviewClicked()
 	$("#myAssignedIssuesSidebarButton").removeClass("active");
 	$("#archivedIssuesSidebarButton").removeClass("active");
 	$("#overviewSidebarButton").addClass("active");
-	$("#feedbackSidebarButton").removeClass("active");
 
 	// Call change page content
 	changePageContentTo("overview");
@@ -219,7 +223,6 @@ function myAssignedIssuesClicked()
 	$("#overviewSidebarButton").removeClass("active");
 	$("#archivedIssuesSidebarButton").removeClass("active");
 	$("#myAssignedIssuesSidebarButton").addClass("active");
-	$("#feedbackSidebarButton").removeClass("active");
 
 	// Call change page content
 	changePageContentTo("myIssues");
@@ -237,27 +240,9 @@ function archivedIssuesClicked()
 	$("#overviewSidebarButton").removeClass("active");
 	$("#myAssignedIssuesSidebarButton").removeClass("active");
 	$("#archivedIssuesSidebarButton").addClass("active");
-	$("#feedbackSidebarButton").removeClass("active");
 
 	// Call change page content
 	changePageContentTo("archivedIssues");
-}
-
-// Feedback Clicked
-function feedbackClicked()
-{
-	if (!dataIsLoaded)
-	{
-		return;
-	}
-
-	// Handler Sidebar active classes
-	$("#overviewSidebarButton").removeClass("active");
-	$("#myAssignedIssuesSidebarButton").removeClass("active");
-	$("#archivedIssuesSidebarButton").removeClass("active");
-	$("#feedbackSidebarButton").addClass("active");
-
-	changePageContentTo("feedback");
 }
 
 // Change page content to
@@ -269,7 +254,6 @@ function changePageContentTo(content)
 		// Hide out other contents
 		$("#assignedIssuesContent").addClass("hidden");
 		$("#archivedIssuesContent").addClass("hidden");
-		$("#feedbackContent").addClass("hidden");
 
 		// Show correct content
 		$("#overviewContent").removeClass("hidden");
@@ -280,7 +264,6 @@ function changePageContentTo(content)
 		// Hide out other contents
 		$("#overviewContent").addClass("hidden");
 		$("#archivedIssuesContent").addClass("hidden");
-		$("#feedbackContent").addClass("hidden");
 
 		// Show correct content
 		$("#assignedIssuesContent").removeClass("hidden");
@@ -291,21 +274,9 @@ function changePageContentTo(content)
 		// Hide out other contents
 		$("#overviewContent").addClass("hidden");
 		$("#assignedIssuesContent").addClass("hidden");
-		$("#feedbackContent").addClass("hidden");
 
 		// Show correct content
 		$("#archivedIssuesContent").removeClass("hidden");
-	}
-	// Feedback
-	else if (content = "feedback")
-	{
-		// Hide out other contents
-		$("#overviewContent").addClass("hidden");
-		$("#assignedIssuesContent").addClass("hidden");
-		$("#archivedIssuesContent").addClass("hidden");
-
-		// Show correct content
-		$("#feedbackContent").removeClass("hidden");
 	}
 }
 
@@ -381,7 +352,21 @@ function initalizeAllDataTables()
 		]
 	});
 
-	$("#feedbackTable").dataTable(
+	$("#openFeedbackTable").dataTable(
+	{
+		"autoWidth": false,
+		"columns": 
+		[
+			{ "width": "10%" },
+		    null
+		],
+		"order":
+		[
+			[0, "desc"]
+		]
+	});
+
+	$("#closedFeedbackTable").dataTable(
 	{
 		"autoWidth": false,
 		"columns": 
@@ -417,7 +402,8 @@ function loadDataIntoTables()
 	window.allClosedIssues = JSON.parse(sessionStorage.getItem("allClosedIssues"));
 	window.myOpenIssues = JSON.parse(sessionStorage.getItem("myOpenIssues"));
 	window.myClosedIssues = JSON.parse(sessionStorage.getItem("myClosedIssues"));
-	window.allFeedbackReports = JSON.parse(sessionStorage.getItem("allFeedbackReports"));
+	window.openFeedbackReports = JSON.parse(sessionStorage.getItem("openFeedbackReports"));
+	window.closedFeedbackReports = JSON.parse(sessionStorage.getItem("closedFeedbackReports"));
 
 	// Loop through allOpenIssues and add to openIssuesTable 
 	var openIssuesTable = $("#openIssuesTable").DataTable();
@@ -461,13 +447,22 @@ function loadDataIntoTables()
 		myClosedIssuesTable.row.add([issue.issueNo, issue.title, issue.frequency, issue.hasAttachments]);
 	}
 
-	// Loop through allFeedbackReports
-	var feedbackTable = $("#feedbackTable").DataTable();
-	for (var i = 0; i < allFeedbackReports.length; ++i)
+	// Loop through openFeedbackReports
+	var openFeedbackTable = $("#openFeedbackTable").DataTable();
+	for (var i = 0; i < openFeedbackReports.length; ++i)
 	{
 		// Get the feedback
-		var feedbackReport = allFeedbackReports[i];
-		feedbackTable.row.add([feedbackReport.feedbackNo, feedbackReport.feedbackText]);
+		var feedbackReport = openFeedbackReports[i];
+		openFeedbackTable.row.add([feedbackReport.feedbackNo, feedbackReport.feedbackText]);
+	}
+
+	// Loop through closedFeedbackReports
+	var closedFeedbackTable = $("#closedFeedbackTable").DataTable();
+	for (var i = 0; i < closedFeedbackReports.length; ++i)
+	{
+		// Get the feedback
+		var feedbackReport = closedFeedbackReports[i];
+		closedFeedbackTable.row.add([feedbackReport.feedbackNo, feedbackReport.feedbackText]);
 	}
 
 	// Draw the tables
@@ -475,7 +470,8 @@ function loadDataIntoTables()
 	closedIssuesTable.draw();
 	myOpenIssuesTable.draw();
 	myClosedIssuesTable.draw();
-	feedbackTable.draw();
+	openFeedbackTable.draw();
+	closedFeedbackTable.draw();
 
 	// Set badge
 	$("#myAssignedBadge").text(myOpenIssues.length);

@@ -47,7 +47,7 @@
   <!-- End Header -->
 
   <!-- Body -->
-  <body class = "">
+  <body class = "hidden">
 
     <!-- Navbar -->
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -92,8 +92,7 @@
           <ul class="nav nav-sidebar">
             <li class="active" id="overviewSidebarButton"><a href="#">Overview</a></li>
             <li id="myAssignedIssuesSidebarButton"><a href="#">My Assigned Issues<span class = "badge pull-right" id = "myAssignedBadge"></span></a></li>
-            <li id="archivedIssuesSidebarButton"><a href="#">Archived Issues</a></li>
-            <li id="feedbackSidebarButton"><a href="#">Feedback</a></li>
+            <li id="archivedIssuesSidebarButton"><a href="#">Archives</a></li>
           </ul>
         </div>
         <!-- End Sidebar -->
@@ -128,6 +127,31 @@
                     <th>Frequency</th>
                     <th>Has Attachment</th>
                     <th>Assignee</th>
+                    <th class = "hidden">rowID</th>
+                  </tr>
+                </thead>
+              </table>
+            
+            </div>
+            <!-- End Panel Body -->
+
+          </div>
+          <!-- End Panel -->
+
+          <!-- Main Panel -->
+          <div class="panel panel-primary">
+
+            <!-- Panel Title -->
+            <div class="panel-heading">Open Feedback Reports</div>
+
+            <!-- Panel Body -->
+            <div class="panel-body">
+
+              <table id="openFeedbackTable" class="table table-hover table-bordered" cellspacing="0" width="100%">
+                <thead>
+                  <tr class = "active">
+                    <th>Report #</th>
+                    <th>Content</th>
                     <th class = "hidden">rowID</th>
                   </tr>
                 </thead>
@@ -208,7 +232,7 @@
         <!-- Archived Issues Content -->
         <div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-2 main hidden" id = "archivedIssuesContent">
           
-          <!-- Main Panel -->
+          <!-- Archived Issues -->
           <div class="panel panel-primary">
 
             <!-- Panel Title -->
@@ -236,24 +260,16 @@
           </div>
           <!-- End Panel -->
 
-
-    
-        </div>
-        <!-- End archived content -->
-
-         <!-- Feedback Content -->
-        <div class="col-sm-9 col-sm-offset-3 col-md-9 col-md-offset-2 main hidden" id = "feedbackContent">
-          
-          <!-- Main Panel -->
+          <!-- Archived Feedback -->
           <div class="panel panel-primary">
 
             <!-- Panel Title -->
-            <div class="panel-heading">All Feedback Reports</div>
+            <div class="panel-heading">Archived Feedbacks</div>
 
             <!-- Panel Body -->
             <div class="panel-body">
 
-              <table id="feedbackTable" class="table table-hover table-bordered" cellspacing="0" width="100%">
+              <table id="closedFeedbackTable" class="table table-hover table-bordered" cellspacing="0" width="100%">
                 <thead>
                   <tr class = "active">
                     <th>Report #</th>
@@ -270,9 +286,10 @@
           <!-- End Panel -->
 
 
+
     
         </div>
-        <!-- End feedback content -->
+        <!-- End archived content -->
 
       </div>
       <!-- End Main Row -->
