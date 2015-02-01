@@ -1,0 +1,114 @@
+function viewReportPageActions()
+{
+	// Parse initialize
+	Parse.initialize("VDsb6f3XOgG9w2G0Tbqd9iubJxKFTxveHCd8nwtP", "UDjT4ktfGjewHqoic96nLaEZW4uc321rruQJK1J6");
+
+	// Set a global variable to tell when and if to show the page
+	// Will be used to make page wait for authentication from parse servers
+	window.canLoadViewReportPage = false;
+
+	// Get the objectID
+	var userObjectID = retrieveValueFromCookies("userObjectID");
+
+	// Check for paramters
+	var issueNo = getIssueNoForViewReportPage();
+
+	// If not logged in, then redirect to index.html
+	if (userObjectID == null)
+	{
+		window.location.replace("index.html");
+	}
+	// Else check that a parameter was passed in
+	else if (issueNo == null || issueNo == "" || isNaN(issueNo))
+	{
+		window.location.replace("report.html");
+	}
+
+	// Global Variable to determine if data is fully loaded or not
+	window.dataIsLoaded = false;
+
+	// Global Variable for Admin Data Loader
+	window.viewReportDataLoader = new ViewReportDataLoader(issueNo);
+
+	// Else is logged in, check if is admin
+	Parse.Cloud.run("isAdmin",{"userObjectID":userObjectID}).then(function(result)
+	{
+		// If user is not an admin, then redirect
+		if (!result)
+		{
+			window.location.replace("report.html");
+		}
+		// Else is admin, set canLoadViewReportPage to true and load the page
+		else
+		{
+			canLoadViewReportPage = true;
+			viewReportDataLoader.retrieveData();
+		}
+	});
+}
+
+function viewFeedbackPageActions()
+{
+	// Parse initialize
+	Parse.initialize("VDsb6f3XOgG9w2G0Tbqd9iubJxKFTxveHCd8nwtP", "UDjT4ktfGjewHqoic96nLaEZW4uc321rruQJK1J6");
+
+	// Set a global variable to tell when and if to show the page
+	// Will be used to make page wait for authentication from parse servers
+	window.canLoadFeedbackPage = false;
+
+	// Get the objectID
+	var userObjectID = retrieveValueFromCookies("userObjectID");
+
+	// Check for paramters
+	var issueNo = getFeedbackNoForViewReportPage();
+
+	// If not logged in, then redirect to index.html
+	if (userObjectID == null)
+	{
+		window.location.replace("index.html");
+	}
+	// Else check that a parameter was passed in
+	else if (issueNo == null || issueNo == "" || isNaN(issueNo))
+	{
+		window.location.replace("report.html");
+	}
+
+	// Global Variable to determine if data is fully loaded or not
+	window.dataIsLoaded = false;
+
+	// Global Variable for Admin Data Loader
+	window.viewFeedbackDataLoader = new ViewFeedbackDataLoader(issueNo);
+
+	// Else is logged in, check if is admin
+	Parse.Cloud.run("isAdmin",{"userObjectID":userObjectID}).then(function(result)
+	{
+		// If user is not an admin, then redirect
+		if (!result)
+		{
+			window.location.replace("report.html");
+		}
+		// Else is admin, set canLoadViewReportPage to true and load the page
+		else
+		{
+			canLoadFeedbackPage = true;
+			viewFeedbackDataLoader.retrieveData();
+		}
+	});
+}
+
+function getIssueNoForViewReportPage()
+{
+	name = "issueNo".replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? null : decodeURIComponent(results[1].replace(/\+/g, " ")).trim();
+}
+
+function getFeedbackNoForViewReportPage()
+{
+	name = "feedbackNo".replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? null : decodeURIComponent(results[1].replace(/\+/g, " ")).trim();
+}
+

@@ -1,9 +1,6 @@
 //Parse initialize
 Parse.initialize("3LfQqo1TAShUQ01SxhW4YkGp2ZuQGwtQZbtnaqhv", "UW3xdJypgbRXFqU2tisIYghtAAWB7uNOg33jGTKk");
 
-// Enable SelectPicker
-$('#dropdownFrequency').selectpicker();
-
 // Call main function when document is loaded
 $(document).ready(main);
 
@@ -25,6 +22,9 @@ var imageAttachmentArray = [];
 // Main Function
 function main()
 {	
+	// Enable SelectPicker
+	$('#dropdownFrequency').selectpicker();
+	
 	// When the submit button is pressed
 	$("#submitButton").click(submitReport);
 	
