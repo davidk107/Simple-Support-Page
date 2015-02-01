@@ -7,9 +7,23 @@ var FeedbackClass = Parse.Object.extend("Feedback");
 // Before saving a BugReport
 Parse.Cloud.beforeSave("BugReport", function(request, response)
 {
+	
 	// Get the new report
-	var newReport = request.object;
+	var report = request.object;
 
+	// Assign issue number to newly created Bug Reports
+	if (report.existed())
+	{
+		response.success();
+		return;
+	}
+	// If new report, but with an already assigned issueNumber, then reject it
+	else if (report.get("issueNumber"))
+	{
+		response.error();
+		return;
+	}
+	// Else assign it 
 	// Query for the last created report and retrieve its issue number
 	var lastCreatedReportQuery = new Parse.Query(BugReportClass);
 	lastCreatedReportQuery.descending("createdAt");
@@ -25,7 +39,7 @@ Parse.Cloud.beforeSave("BugReport", function(request, response)
 		}
 			
 		// Set the issueNumber
-		newReport.set("issueNumber",issueNumber);
+		report.set("issueNumber",issueNumber);
 
 		// Done
 		response.success();
@@ -33,7 +47,7 @@ Parse.Cloud.beforeSave("BugReport", function(request, response)
 	// Error handler
 	function(error)
 	{
-		newReport.set("issueNumber", -1);
+		report.set("issueNumber", -1);
 		response.success();
 	});
 });
@@ -42,7 +56,20 @@ Parse.Cloud.beforeSave("BugReport", function(request, response)
 Parse.Cloud.beforeSave("Feedback", function(request, response)
 {
 	// Get the new feedback
-	var newFeedback = request.object;
+	var feedback = request.object;
+
+	// Assign issue number to newly created Bug Reports
+	if (feedback.existed())
+	{
+		response.success();
+		return;
+	}
+	// If new report, but with an already assigned issueNumber, then reject it
+	else if (feedback.get("feedbackNumber"))
+	{
+		response.error();
+		return;
+	}
 
 	// Query for the last created feedback and retrieve its feedback number
 	var lastCreatedFeedbackQuery = new Parse.Query(FeedbackClass);
@@ -59,7 +86,7 @@ Parse.Cloud.beforeSave("Feedback", function(request, response)
 		}
 			
 		// Set the feedback
-		newFeedback.set("feedbackNumber",feedbackNumber);
+		feedback.set("feedbackNumber",feedbackNumber);
 
 		// Done
 		response.success();
@@ -67,7 +94,7 @@ Parse.Cloud.beforeSave("Feedback", function(request, response)
 	// Error handler
 	function(error)
 	{
-		newFeedback.set("feedbackNumber", -1);
+		feedback.set("feedbackNumber", -1);
 		response.success();
 	});
 });
