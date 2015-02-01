@@ -1,5 +1,5 @@
 // Set username at nav bar
-$("#usernameDisplay").text(Parse.User.current().get("username"));
+$("#usernameDisplay").text(Parse.User.current().get("firstName"));
 
 // Initialize the datatables
 initalizeAllDataTables();

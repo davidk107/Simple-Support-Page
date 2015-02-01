@@ -67,7 +67,7 @@ function submitSuggestion()
 	// Create new BugReport
 	var feedbackReport = new FeedbackClass();
 	feedbackReport.set("feedbackText", suggestionsValue);
-
+	feedbackReport.set("status", "Open");
 	// Save the feedback
 	feedbackReport.save().then(function()
 	{
