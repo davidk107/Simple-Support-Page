@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!-- Header -->
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Submit Bug Reports for Down">
+      <meta name="author" content="">
+
+      <!-- Title -->
+      <title>Support Page Admin Portal</title>
+
+      <!-- Bootstrap core CSS -->
+      <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">
+      <link href="css/main.css" rel="stylesheet">
+
+      <!-- Font-Awesome CSS CDN -->
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+       <!-- Dropdown Select Plugin -->
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.3.5/bootstrap-select.min.css" rel="stylesheet">
+
+      <!-- Load Javascript Files -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js" defer></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js" defer></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.3.5/bootstrap-select.min.js" defer></script>
+
+      <!-- Load Parse Javascript for use in main -->
+      <script src="https://www.parsecdn.com/js/parse-1.3.3.min.js" defer></script>
+
+      <!-- Load the main.js file for user authentication,etc -->
+      <script src="js/main.js" defer></script>
+      <script src="js/viewReportDataLoader.js" defer></script>
+      <script src="js/viewReport.js" defer></script>
+
+  </head>
+  <!-- End Header -->
+
+  <!-- Body -->
+  <body>
+
+   
+
+    <!-- Loading Screen Content -->
+    <div class="container hidden" id = "loadingContainer">   
+
+      <!-- Loading Data Text and spinner -->
+      <h2 class ="text-center"> Loading Data </h2>
+      <p class="text-center"> <span class = "fa fa-spinner fa-spin fa-3x center-block"></span> </p>
+
+    </div>
+    <!-- End Loading Screen Content -->
+
+    <!-- Main Info Panel -->
+    <div class = "container hidden" id = "viewReportContainer">
+
+      <!-- Success Alert -->
+      <div class="alert alert-success alert-dismissible hidden" role="alert" id ="successAlert">
+       <!--  <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button> -->
+        <span id = "successAlertText">
+          Issue successfully updated
+        </span>
+      </div>
+
+      <!-- Danger Alert -->
+      <div class="alert alert-danger alert-dismissible hidden" role="alert" id ="dangerAlert">
+        <!-- <button type="button" class="close" data-dismiss="alert">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button> -->
+        <span id = "dangerAlertText">
+          A problem occured while saving. Please try again.
+        </span>
+      </div>
+
+
+      <div class="panel panel-primary">
+        <!-- Panel Title -->
+        <div class="panel-heading clearfix">
+          <p class="panel-title pull-left" id="issueNumberPanelTitle">Issue #</p>
+          <p class="panel-title pull-right" id="lastUpdatedPanelTitle">Last Updated:</p>
+        </div>
+
+        <!-- Panel Body -->
+        <div class="panel-body">
+
+          <!-- Top Form -->
+          <form class="form-horizontal" id="topViewReportForm" role="form">
+
+            <!-- Assignee Input -->
+            <div class="form-group" id ="assigneeInputGroup">
+              <label for="inputAssignee" class="col-md-1 control-label">Assignee</label>
+
+              <!-- Assignee Picker -->
+              <div class="col-md-4">
+
+                <!-- Assignee Select Picker -->
+                <select class="form-control selectpicker" id = "inputAssignee">
+                  <option></option>
+                  <option>Adam</option>
+                  <option>Joseph</option>
+                  <option>Mary</option>
+                  <option>George</option>
+                </select>
+              </div>
+            
+            <!-- Status Input -->
+              <label for="inputStatus" class="col-md-1  col-md-offset-1 control-label">Status</label>
+
+              <!-- Assignee Picker -->
+              <div class="col-md-4">
+
+                <!-- Assignee Select Picker -->
+                <select class="form-control selectpicker" id = "inputStatus">
+                  <option>Open</option>
+                  <option>Rejected</option>
+                  <option>Fixed</option>
+                </select>
+              </div>
+            </div>
+
+          </form>
+          <!-- End Top Form -->
+
+          <hr>
+
+          <!-- Middle Form -->
+          <form class="form-horizontal" id="middleViewReportForm" role="form">
+
+            <!-- Title Input -->
+            <div class="form-group" id ="titleInputGroup">
+              <label for="inputTitle" class="col-md-1 control-label">Title</label>
+              <div class="col-md-11">
+                <input type="text" class="form-control" id="inputTitle" readonly>
+              </div>
+            </div>
+
+            <!-- Description Input -->
+            <div class="form-group" id = "descriptionInputGroup">
+              <label for="inputDescription" class="col-md-1 control-label">Description</label>
+              <div class="col-md-11">
+                <textarea class="form-control" rows="5" id="inputDescription" readonly></textarea>
+              </div>
+            </div>
+
+            <!-- Steps to Reproduce Input -->
+            <div class="form-group" id = "stepsInputGroup">
+              <label for="inputSteps" class="col-md-1 control-label">Steps to Reproduce</label>
+              <div class="col-md-11">
+                <textarea class="form-control" rows="5" id="inputSteps" readonly></textarea>
+              </div>
+            </div>
+
+            <!-- Frequency Display -->
+            <div class="form-group" id = "frequencyInputGroup">
+              <label for="dropdownFrequency" class="col-md-1 control-label">Frequency</label>
+              <div class="col-md-2">
+        				<input type="text" class="form-control" id="inputFrequency" readonly>
+              </div>
+            </div>
+            
+            <!-- Screenshot Display -->
+            <div class = "form-group hidden" id = "sceenshotDisplayForm">
+              <label for="fileInput" class="col-md-1 control-label">Screenshots</label>
+
+              <div class = "col-md-2" id = "screenshotDisplayDiv">
+                <!-- Screenshot Display List -->
+                <ul class="list-group" id = "screenshotDisplayList">
+
+                </ul>
+              </div>
+
+            </div>
+
+          </form>
+          <!-- End Middle Form -->
+
+          <hr>
+
+          <!-- Bottom Form -->
+          <form class="form-horizontal" id="bottomViewReportForm" role="form">
+
+            <div class = "form-group">
+              <!-- Label -->
+              <label for="commentInput" class="col-md-1 control-label">Comments</label>
+
+              <!-- Main Comments Body -->
+              <div class = "col-md-7" id = "commentSubmissionBody">
+
+                <!-- For comment display -->
+                <span id = "commentsSpan"> 
+                </span>
+
+                <!-- Comment text area -->
+                <textarea class="form-control hidden" rows="3" id="inputCommentMessage"></textarea>
+                
+                <!-- Comment add button -->
+                <button type="button" class="btn btn-info" id = "addCommentButton"><span class = "glyphicon glyphicon-pencil"></span> Add Comment</button>
+
+              </div>
+            </div>
+
+          </form>
+          <!-- End Bottom Form -->
+
+          <hr>    
+
+          <!-- Save Button -->   
+          <div class = "col-md-2 col-md-offset-5" id = "saveDiv">
+            <button type="button" class="btn btn-success btn-block disabled" data-loading-text="Saving..." id = "saveButton">Save
+            </button>    
+          </div>
+          <!-- End Save -->      
+
+        </div>
+        <!-- End Panel Body -->
+
+      </div>
+      <!-- End Panel -->
+
+    </div>
+    <!-- End Container -->
+
+  </body>
+  <!-- End Body -->
+
+</html>
