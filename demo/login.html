@@ -44,17 +44,24 @@
         <h1>Support <small>Login</small></h1>
       </div>
 
+      
+
       <!-- Login Form -->
       <form id="loginForm" class="form-signin" onsubmit="alert('stop submit');" role>
 
         <!-- Sign in Header -->
         <h2 class="form-signin-heading">Sign in</h2>
 
+        <div class="alert alert-warning" role="alert">
+          For the purposes of this demo, the login credentials have already been filled out. 
+        </div>
+
         <!-- Username -->
-        <input type="text" class="form-control form-control-username" id = "inputUsername" placeholder="Username" required autofocus />
+        <input type="text" class="form-control form-control-username" id = "inputUsername" placeholder="Username" value=
+        "David" required />
 
         <!-- Password -->
-        <input type="password" class="form-control form-control-password" id = "inputPassword" placeholder="Password" required />
+        <input type="password" class="form-control form-control-password" id = "inputPassword" placeholder="Password" value="system14" required />
 
         <!-- Login Button -->
         <input type="submit" class="btn btn-lg btn-primary btn-block form-control-submit"  id = "loginButton" value="Login" /> 
