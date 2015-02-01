@@ -88,9 +88,6 @@ function main()
 // Tbody Clicked
 function processTableClick(tableType)
 {
-	// DEBUG MODE
-	return;
-
 	var dataTable = null;
 	var type;
 	// Select correct table
@@ -114,11 +111,17 @@ function processTableClick(tableType)
 		dataTable = $("#closedIssuesTable").DataTable();
 		type = "issue";
 	}
-	else if (tableType.data == "feedbackTable")
-	{
-		dataTable = $("#feedbackTable").DataTable();
-		type = "feedback";
-	}
+	// Disabled clicking for feedbacks
+	// else if (tableType.data == "openFeedbackTable")
+	// {
+	// 	dataTable = $("#openFeedbackTable").DataTable();
+	// 	type = "feedback";
+	// }
+	// else if (tableType.data == "closedFeedbackTable")
+	// {
+	// 	dataTable = $("#closedFeedbackTable").DataTable();
+	// 	type = "feedback";
+	// }
 
 	// Open a new window with either view report or view feedback
 	try
